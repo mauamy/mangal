@@ -4,6 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
+
 	"github.com/invopop/jsonschema"
 	"github.com/metafates/mangal/anilist"
 	"github.com/metafates/mangal/converter"
@@ -18,11 +24,6 @@ import (
 	"github.com/samber/mo"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"io"
-	"os"
-	"path/filepath"
-	"reflect"
-	"strings"
 )
 
 func init() {
@@ -31,6 +32,7 @@ func init() {
 	inlineCmd.Flags().StringP("query", "q", "", "query to search for")
 	inlineCmd.Flags().StringP("manga", "m", "", "manga selector")
 	inlineCmd.Flags().StringP("chapters", "c", "", "chapter selector")
+	inlineCmd.Flags().BoolP("list", "l", false, "list chapters")
 	inlineCmd.Flags().BoolP("download", "d", false, "download chapters")
 	inlineCmd.Flags().BoolP("json", "j", false, "JSON output")
 	inlineCmd.Flags().BoolP("populate-pages", "p", false, "Populate chapters pages")
@@ -137,6 +139,7 @@ When using the json flag manga selector could be omitted. That way, it will sele
 		options := &inline.Options{
 			Sources:             sources,
 			Download:            lo.Must(cmd.Flags().GetBool("download")),
+			List:                lo.Must(cmd.Flags().GetBool("list")),
 			Json:                lo.Must(cmd.Flags().GetBool("json")),
 			Query:               query,
 			PopulatePages:       lo.Must(cmd.Flags().GetBool("populate-pages")),

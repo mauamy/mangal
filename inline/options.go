@@ -2,14 +2,15 @@ package inline
 
 import (
 	"fmt"
-	"github.com/metafates/mangal/source"
-	"github.com/metafates/mangal/util"
-	"github.com/samber/lo"
-	"github.com/samber/mo"
 	"io"
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/metafates/mangal/source"
+	"github.com/metafates/mangal/util"
+	"github.com/samber/lo"
+	"github.com/samber/mo"
 )
 
 type (
@@ -22,6 +23,7 @@ type Options struct {
 	Sources             []source.Source
 	IncludeAnilistManga bool
 	Download            bool
+	List                bool
 	Json                bool
 	PopulatePages       bool
 	Query               string
