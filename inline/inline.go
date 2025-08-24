@@ -1,12 +1,13 @@
 package inline
 
 import (
+	"os"
+
 	"github.com/metafates/mangal/downloader"
 	"github.com/metafates/mangal/key"
 	"github.com/metafates/mangal/log"
 	"github.com/metafates/mangal/source"
 	"github.com/spf13/viper"
-	"os"
 )
 
 func Run(options *Options) (err error) {
@@ -128,6 +129,11 @@ func Run(options *Options) (err error) {
 			}
 
 			_, err = options.Out.Write([]byte(path + "\n"))
+			if err != nil {
+				log.Warn(err)
+			}
+		} else if options.List {
+			_, err = options.Out.Write([]byte(chapter.Name + "\n"))
 			if err != nil {
 				log.Warn(err)
 			}
