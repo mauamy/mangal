@@ -74,8 +74,10 @@ When using the json flag manga selector could be omitted. That way, it will sele
 	Example: "https://github.com/metafates/mangal/wiki/Inline-mode",
 	PreRun: func(cmd *cobra.Command, args []string) {
 		json, _ := cmd.Flags().GetBool("json")
+		query, _ := cmd.Flags().GetString("query")
+		list, _ := cmd.Flags().GetBool("list")
 
-		if !json {
+		if !json && (!list || query == "") {
 			lo.Must0(cmd.MarkFlagRequired("manga"))
 		}
 

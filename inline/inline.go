@@ -1,6 +1,7 @@
 package inline
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/metafates/mangal/downloader"
@@ -25,7 +26,7 @@ func Run(options *Options) (err error) {
 		mangas = append(mangas, m...)
 	}
 
-	if options.MangaPicker.IsAbsent() && options.ChaptersFilter.IsAbsent() {
+	if options.MangaPicker.IsAbsent() && options.ChaptersFilter.IsAbsent() && !options.List {
 		if viper.GetBool(key.MetadataFetchAnilist) {
 			for _, manga := range mangas {
 				_ = manga.PopulateMetadata(func(string) {})
@@ -39,6 +40,16 @@ func Run(options *Options) (err error) {
 
 		_, err = options.Out.Write(marshalled)
 		return err
+	}
+
+	if options.MangaPicker.IsAbsent() && options.List {
+		for i, manga := range mangas {
+			_, err = options.Out.Write([]byte(fmt.Sprintf("[%d] %s\n", i, manga.Name)))
+			if err != nil {
+				return err
+			}
+		}
+		return nil
 	}
 
 	// manga picker can only be none if json is set
